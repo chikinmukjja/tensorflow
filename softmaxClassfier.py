@@ -24,8 +24,13 @@ hypothesis = tf.nn.softmax(tf.matmul(X,W))
 
 learning_rate = 0.001
 
-cost = tf.reduce_mean(-tf.reduce_sum(Y*tf.log(hypothesis), reduction_indices=1))
+# Y*tf.log(hypothesis) is elementary multiplication
+# tf.reduce_sum is sum of all elem
+# reduction_indices is old(deprecated) name of axis, single value / num of dimension of axis(denominator)
+# return a tensor with a single element
+#cost = tf.reduce_mean(-tf.reduce_sum(Y*tf.log(hypothesis), reduction_indices=1))
 
+cost = tf.reduce_mean(-tf.reduce_sum(Y*tf.log(hypothesis), axis=1))
 optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
 init = tf.global_variables_initializer()
@@ -33,6 +38,9 @@ init = tf.global_variables_initializer()
 with tf.Session() as sess:
     sess.run(init)
     print x_data, sess.run(W), sess.run(tf.matmul(X,W),feed_dict={X: x_data}), sess.run(hypothesis, feed_dict={X:x_data})
+    print sess.run(tf.reduce_sum(Y*tf.log(hypothesis)),feed_dict={X: x_data,Y: y_data})
+    print '-'*10
+    print sess.run(cost,feed_dict={X: x_data, Y: y_data})
     for step in xrange(2001):
         sess.run(optimizer,feed_dict={X:x_data, Y:y_data})
         if step % 20 == 0:
@@ -44,3 +52,4 @@ with tf.Session() as sess:
     print b, sess.run(tf.arg_max(b, 1))
     c = sess.run(hypothesis, feed_dict={X: [[1, 1, 0]]})
     print c, sess.run(tf.arg_max(c, 1))
+
