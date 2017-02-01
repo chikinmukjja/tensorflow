@@ -2,7 +2,7 @@
 import tensorflow as tf
 import numpy as np
 
-xy = np.loadtxt('train.txt',unpack=True,dtype='float32')
+xy = np.loadtxt('xor_train.txt',unpack=True,dtype='float32')
 
 x_data = xy[:-1]
 y_data = xy[-1]
@@ -34,9 +34,9 @@ for step in xrange(2001):
     if step % 20 == 0:
         print step, sess.run(cost,feed_dict={X: x_data, Y: y_data}), sess.run(W)
 
-print sess.run(hypothesis, feed_dict={X: [[1],[2],[2]]})
-print sess.run(hypothesis, feed_dict={X: [[1],[1],[5]]})
-print sess.run(hypothesis, feed_dict={X: [[1],[5],[8]]})
-
+print sess.run(tf.floor(hypothesis+0.5), feed_dict={X: [[0],[0]]})
+print sess.run(tf.floor(hypothesis+0.5), feed_dict={X: [[0],[1]]})
+print sess.run(tf.floor(hypothesis+0.5), feed_dict={X: [[1],[1]]})
+print sess.run(tf.floor(hypothesis+0.5), feed_dict={X: [[1],[0]]})
 
 

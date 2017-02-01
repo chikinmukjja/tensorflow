@@ -15,6 +15,7 @@ y = tf.placeholder("float",[None,10])
 W = tf.Variable(tf.zeros([784,10]))
 b = tf.Variable(tf.zeros([10]))
 
+
 activation = tf.nn.softmax(tf.matmul(x,W)+b)
 learning_rate = 0.2
 
@@ -34,6 +35,7 @@ for epoch in range(training_epochs):
 
     for i in range(total_batch):
         batch_xs, batch_ys = mnist.train.next_batch(batch_size)
+        #print batch_xs, batch_ys
         sess.run(optimizer,feed_dict={x: batch_xs,y: batch_ys})
         avg_cost += sess.run(cost,feed_dict={x: batch_xs, y: batch_ys})/total_batch
 
