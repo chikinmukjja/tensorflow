@@ -89,3 +89,4 @@ with tf.Session() as sess:
     print "Accuracy: ", accuracy.eval({X: mnist.test.images, Y: mnist.test.labels,dropout_rate:1})
 
 
+# comment for git push test
